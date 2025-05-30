@@ -15,12 +15,8 @@ in
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
-      <home-manager/nixos>
       nixvim.nixosModules.nixvim
     ];
-  
-  home-manager.useUserPackages = true;
-  home-manager.useGlobalPkgs = true;
   
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
@@ -174,14 +170,6 @@ in
     ];
   };
 
-  home-manager.users.user = { pkgs, ... }: {
-    home.packages = [];
-
-    # The state version is required and should stay at the version you
-    # originally installed.
-    home.stateVersion = "24.11";
-  };
-
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
@@ -214,7 +202,6 @@ in
     fastfetch
     qdirstat # disk analyser
     networkmanagerapplet #network ui
-    home-manager #nix
     imagemagick #to adjust image sizes
     hyprpaper #wallpaper
     alsa-utils #sound util UI
@@ -469,7 +456,7 @@ in
   # this value at the release version of the first install of this system.
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
-  system.stateVersion = "24.11"; # Did you read the comment?
+  system.stateVersion = "25.05"; # Did you read the comment?
   
   #auto clean of nixos
   nix.gc = {
