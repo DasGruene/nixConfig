@@ -62,6 +62,7 @@ in
   services.hypridle.enable = true;
   programs.hyprland = {
     enable = true;
+    withUWSM = true; # recommended for most users
     xwayland.enable = true;
   };
 
@@ -126,7 +127,9 @@ in
 
   # Enable the KDE Plasma Desktop Environment.
   services.displayManager.sddm.enable = true;
-  services.desktopManager.plasma6.enable = true;
+  services.displayManager.sddm.theme = "where-is-my-sddm-theme";
+  services.displayManager.sddm.wayland.enable = true;
+#  services.desktopManager.plasma6.enable = true;
 
   # Configure keymap in X11
   services.xserver.xkb = {
@@ -149,7 +152,7 @@ in
     alsa.support32Bit = true;
     pulse.enable = true;
     # If you want to use JACK applications, uncomment this
-    #jack.enable = true;
+    jack.enable = true;
 
     # use the example session manager (no others are packaged yet so this is enabled by default,
     # no need to redefine it in your config for now)
@@ -158,12 +161,24 @@ in
 
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
+  
+  #virrual machine stuff:
+  programs.virt-manager.enable = true;
+  users.groups.libvirtd.members = ["your_username"];
+  virtualisation.spiceUSBRedirection.enable = true;
+  virtualisation.libvirtd = {
+    enable = true;
+    qemu.vhostUserPackages = with pkgs; [ virtiofsd ];
+  };
+  
+  services.udisks2.enable = true; #auto maount usbs
+  boot.supportedFilesystems = [ "ntfs" ]; # allow winodws format storages devices
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.user = {
     isNormalUser = true;
     description = "user";
-    extraGroups = [ "networkmanager" "wheel" ];
+    extraGroups = [ "networkmanager" "wheel" "libvirtd"];
     packages = with pkgs; [
       kdePackages.kate
     #  thunderbird
@@ -172,12 +187,10 @@ in
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
-
+  programs.direnv.enable = true;
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-    direnv
-    nix-direnv
     vim
     vimPlugins.vim-wayland-clipboard
     git
@@ -193,6 +206,9 @@ in
     chromium
     prusa-slicer
     spotify
+    unzip
+    qmk
+    pavucontrol #audio
     kitty # default terminal hyprland
     waybar # bar for hyprland
     font-awesome # font used by waybar
@@ -206,6 +222,27 @@ in
     hyprpaper #wallpaper
     alsa-utils #sound util UI
     xfce.thunar-archive-plugin #archive addon to thunar
+    weston # used by sddm
+    where-is-my-sddm-theme
+    wineWowPackages.stable
+
+    # support 32-bit only
+    wine
+
+    # support 64-bit only
+    (wine.override { wineBuild = "wine64"; })
+
+    # support 64-bit only
+    wine64
+
+    # wine-staging (version with experimental features)
+    wineWowPackages.staging
+
+    # winetricks (all versions)
+    winetricks
+
+    # native wayland support (unstable)
+    wineWowPackages.waylandFull
     (vscode-with-extensions.override {
       vscode = vscodium;
       vscodeExtensions = with vscode-extensions; [
@@ -222,9 +259,9 @@ in
 ## Link to info: https://raw.githubusercontent.com/nix-community/nix-vscode-extensions/refs/heads/master/data/cache/vscode-marketplace-latest.json
         {
           name = "elixir-ls";
-          publisher = "jakebecker";
-          version = "0.27.2";
-          sha256 = "sha256-PXQiZOAAApsYLB3hztQcjAsnmkfDSDtYvUmMhFUfLxA=";
+          publisher = "JakeBecker";
+          version = "0.28.0";
+          sha256 = "sha256-pHLAA7i2HJC523lPotUy5Zwa3BTSTurC2BA+eevdH38=";
         }
 	{
           name = "python-extension-pack";
@@ -414,13 +451,13 @@ in
     
     config.common.default = [
       "hyprland"
-      "gtk"
+      #"gtk"
     ];
 
     # systemctl --user status xdg-desktop-portal-hyprland.service
     extraPortals = [ 
       pkgs.xdg-desktop-portal-hyprland
-      pkgs.xdg-desktop-portal-gtk
+      #pkgs.xdg-desktop-portal-gtk
     ];
   };
 
@@ -466,6 +503,6 @@ in
   };
 
   system.autoUpgrade.enable = true;
-  system.autoUpgrade.allowReboot = true;
+  nix.settings.max-jobs = 8;
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 }
