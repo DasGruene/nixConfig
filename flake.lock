@@ -95,8 +95,8 @@
         "nixvim": "nixvim"
       },
       "locked": {
-        "lastModified": 1759597905,
-        "narHash": "sha256-CIBBy37wBO6aVA3SQIm++wC8wJ6Weor4wDvpJcL85nk=",
+        "lastModified": 1759606963,
+        "narHash": "sha256-B4xU8d0cQ9slS7t5hE3/Jxtgm/Ym3LnVab3VikA1GKQ=",
         "path": "/etc/nixos/kickstart.nixvim",
         "type": "path"
       },
@@ -163,11 +163,11 @@
         "systems": "systems_2"
       },
       "locked": {
-        "lastModified": 1759587405,
-        "narHash": "sha256-Kiaug0boLfn7gTi7IBiX185txFRN4Czl1Azj7CpH4C0=",
+        "lastModified": 1759601480,
+        "narHash": "sha256-soZ/qoTw0EilDHTtppZ0/RTiYDu50HaXK734yi1p/5M=",
         "owner": "nix-community",
         "repo": "nixvim",
-        "rev": "3fa0e487260af16dde609940e49c3ddc6c31c6ed",
+        "rev": "8fcf8a9ef1a6aedd50c17259e7efba55838efaed",
         "type": "github"
       },
       "original": {
