@@ -5,17 +5,10 @@
 { config, pkgs, ... }:
 
 
-let
-    nixvim = import (builtins.fetchGit {
-        url = "https://github.com/nix-community/nixvim";
-        ref = "nixos-25.05";
-    });
-in
 {
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
-      nixvim.nixosModules.nixvim
     ];
   
   # Bootloader.
