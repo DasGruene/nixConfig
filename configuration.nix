@@ -2,13 +2,14 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, ... }:
+{ config, pkgs, kickstart-nixvim, ... }:
 
 
 {
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
+      kickstart-nixvim.nixosModules.default
     ];
   
   # Bootloader.
@@ -282,156 +283,6 @@
 
   programs.nixvim.enable = true;
   programs.nixvim.defaultEditor = true;
-  programs.nixvim = {
-    colorschemes = {
-        onedark.enable = true;
-    };
-    globals = {
-      # Set <space> as the leader key
-      # See `:help mapleader`
-      mapleader = " ";
-      maplocalleader = " ";
-
-      # Set to true if you have a Nerd Font installed and selected in the terminal
-      have_nerd_font = true;
-    };
-    #  See `:help 'clipboard'`
-    clipboard = {
-      providers = {
-        wl-copy.enable = true; # For Wayland
-        xsel.enable = true; # For X11
-      };
-
-      # Sync clipboard between OS and Neovim
-      #  Remove this option if you want your OS clipboard to remain independent.
-      register = "unnamedplus";
-    };
-    plugins = {
-      neo-tree = {
-        enable = true;
-	extraOptions = {
-	  window = {
-            position = "right";
-          };
-	  filesystem = {
-            filtered_items = {
-              visible = true;
-            };
-          };
-	};
-      };
-      lsp = {
-        enable = true;
-        servers = {
-          basedpyright.enable = true;
-	  bashls.enable = true;
-	  elixirls.enable = true;
-	  nixd.enable = true;
-	  pylsp.enable = true;
-	  clangd.enable = true;
-        };
-      };
-    };
-    autoCmd = [
-      	{ 
-	  #makes neovim remember last cursor position when reopening files
-	  event = ["BufReadPost"];
-          pattern = ["*"];
-	  callback = { 
-	    __raw = ''
-	      function()
-                local last_position = vim.fn.line("'\"")
-                if last_position > 0 and last_position <= vim.fn.line("$") then
-                  vim.cmd("normal! g'\"")
-                end
-              end '';
-	  }; 
-    	}
-      ];
-    opts = {
-      relativenumber = true;
-      number = true;
-      # if performing an operation that would fail due to unsaved changes in the buffer (like `:q`),
-      # instead raise a dialog asking if you wish to save the current file(s)
-      # See `:help 'confirm'`
-      confirm = true;
-      # Enable mouse mode, can be useful for resizing splits for example!
-      mouse = "a";
-
-      # Don't show the mode, since it's already in the statusline
-      showmode = false;
-
-      # Enable break indent
-      breakindent = true;
-
-      # Save undo history
-      undofile = true;
-
-      # Case-insensitive searching UNLESS \C or one or more capital letters in the search term
-      ignorecase = true;
-      smartcase = true;
-
-      # Keep signcolumn on by default
-      signcolumn = "yes";
-
-      # Preview substitutions live, as you type!
-      inccommand = "split";
-
-      # Show which line your cursor is on
-      cursorline = true;
-
-      # Minimal number of screen lines to keep above and below the cursor.
-      scrolloff = 10;
-
-      # See `:help hlsearch`
-      hlsearch = true;
-    };
-    keymaps = [
-      {
-        mode = "n";
-        key = "<leader>e";
-        action = "<cmd>Neotree toggle<CR>";
-        options = {
-          desc = "Open/close Neotree";
-	  noremap = true;
-          silent = true;
-        };
-      }
-      {
-        mode = "n";
-        key = "<C-h>";
-        action = "<C-w><C-h>";
-        options = {
-          desc = "Move focus to the left window";
-        };
-      }
-      {
-        mode = "n";
-        key = "<C-l>";
-        action = "<C-w><C-l>";
-        options = {
-          desc = "Move focus to the right window";
-        };
-      }
-      {
-        mode = "n";
-        key = "<C-j>";
-        action = "<C-w><C-j>";
-        options = {
-          desc = "Move focus to the lower window";
-        };
-      }
-      {
-        mode = "n";
-        key = "<C-k>";
-        action = "<C-w><C-k>";
-        options = {
-          desc = "Move focus to the upper window";
-        };
-      }
-    ];
-  }; 
-
   
 
   programs.thunar.enable = true;

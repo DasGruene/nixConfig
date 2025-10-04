@@ -1,0 +1,3 @@
+[submodule "kickstart.nixvim"]
+	path = kickstart.nixvim
+	url = git@github.com:DasGruene/kickstart.nixvim.git
