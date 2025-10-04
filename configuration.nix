@@ -178,7 +178,7 @@ in
   users.users.user = {
     isNormalUser = true;
     description = "user";
-    extraGroups = [ "networkmanager" "wheel" "libvirtd"];
+    extraGroups = [ "networkmanager" "wheel" "libvirtd" "docker"];
     packages = with pkgs; [
       kdePackages.kate
     #  thunderbird
@@ -188,13 +188,15 @@ in
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
   programs.direnv.enable = true;
+  virtualisation.docker.enable = true;
+
+
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
     vim
     vimPlugins.vim-wayland-clipboard
     git
-    docker_28
     docker-compose
     ghostty
     fish
@@ -244,12 +246,11 @@ in
     # native wayland support (unstable)
     wineWowPackages.waylandFull
     (vscode-with-extensions.override {
-      vscode = vscodium;
+      vscode = vscode;
       vscodeExtensions = with vscode-extensions; [
         #puplisher.extension
 	bbenoist.nix
         ms-python.python
-        ms-azuretools.vscode-docker
         ms-pyright.pyright
         njpwerner.autodocstring
 	vscodevim.vim
@@ -274,6 +275,12 @@ in
           publisher = "mattpocock";
           version = "0.10.1";
           sha256 = "sha256-WBdtRFaGKUmsriwUgNRToaqGJ6sdzrvOMs/fhEQFmws=";
+        }
+	{
+          name = "remote-containers";
+          publisher = "ms-vscode-remote";
+          version = "0.424.0";
+          sha256 = "sha256-BI7zZVSebatslFUkynr3eY3pRigbDBcpNG1JAOBGrBE=";
         }
       ]; 
     })
@@ -328,6 +335,7 @@ in
 	  elixirls.enable = true;
 	  nixd.enable = true;
 	  pylsp.enable = true;
+	  clangd.enable = true;
         };
       };
     };
