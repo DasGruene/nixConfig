@@ -1,0 +1,2 @@
+warning: Git tree '/etc/nixos' is dirty
+error: flake 'git+file:///etc/nixos' does not provide attribute 'packages.x86_64-linux.nixosConfigurations."nixos".config.system.build.nixos-rebuild', 'legacyPackages.x86_64-linux.nixosConfigurations."nixos".config.system.build.nixos-rebuild' or 'nixosConfigurations."nixos".config.system.build.nixos-rebuild'
