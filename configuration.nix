@@ -228,8 +228,6 @@
     weston # used by sddm
     tree # make it posible to print folder trees in terminal
     where-is-my-sddm-theme
-    opencode
-    warp-terminal
     wineWowPackages.stable
 
     # support 32-bit only
@@ -262,6 +260,7 @@
           vscodevim.vim
           yzhang.markdown-all-in-one
           mkhl.direnv
+          marp-team.marp-vscode
         ]
         ++ pkgs.vscode-utils.extensionsFromVscodeMarketplace [
           ## Link to info: https://raw.githubusercontent.com/nix-community/nix-vscode-extensions/refs/heads/master/data/cache/vscode-marketplace-latest.json
