@@ -192,6 +192,15 @@
   programs.direnv.enable = true;
   virtualisation.docker.enable = true;
 
+  # nix-ld is used to run binaries:
+  programs.nix-ld = {
+    enable = true;
+    libraries = with pkgs; [
+      (pkgs.runCommand "steamrun-lib" { } "mkdir $out; ln -s ${pkgs.steam-run.fhsenv}/usr/lib64 $out/lib")
+      nspr
+      nss_latest
+    ];
+  };
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
@@ -211,6 +220,7 @@
     spotify
     unzip
     qmk
+    xdg-utils
     pavucontrol # audio
     kitty # default terminal hyprland
     waybar # bar for hyprland
@@ -261,6 +271,7 @@
           yzhang.markdown-all-in-one
           mkhl.direnv
           marp-team.marp-vscode
+          ban.spellright
         ]
         ++ pkgs.vscode-utils.extensionsFromVscodeMarketplace [
           ## Link to info: https://raw.githubusercontent.com/nix-community/nix-vscode-extensions/refs/heads/master/data/cache/vscode-marketplace-latest.json
