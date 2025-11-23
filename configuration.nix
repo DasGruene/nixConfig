@@ -30,8 +30,14 @@
 
   # Enable networking
   networking.networkmanager.enable = true;
-  networking.firewall.allowedTCPPorts = [ 57621 ]; # spotify sync with mobile devices on local network
-  networking.firewall.allowedUDPPorts = [ 5353 ]; # spotify sync with other devices ex: google cast, sonos etc, on local network
+  networking.firewall.allowedTCPPorts = [
+    57621 # spotify sync with mobile devices on local network
+  ];
+
+  networking.firewall.allowedUDPPorts = [
+    5353 # spotify sync with other devices ex: google cast, sonos etc, on local network
+  ];
+
   # Set your time zone.
   time.timeZone = "Europe/Copenhagen";
 
@@ -380,5 +386,13 @@
   nix.settings.experimental-features = [
     "nix-command"
     "flakes"
+  ];
+
+  nix.settings.substituters = [
+    "https://cache.nixos.org/"
+  ];
+
+  nix.settings.trusted-substituters = [
+    "https://cache.nixos.org/"
   ];
 }
