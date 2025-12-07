@@ -175,6 +175,8 @@
   };
 
   services.udisks2.enable = true; # auto maount usbs
+  services.devmon.enable = true;
+  services.gvfs.enable = true;
   boot.supportedFilesystems = [ "ntfs" ]; # allow winodws format storages devices
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
@@ -186,6 +188,7 @@
       "wheel"
       "libvirtd"
       "docker"
+      "udisks"
     ];
     packages = with pkgs; [
       kdePackages.kate
@@ -231,7 +234,7 @@
     kitty # default terminal hyprland
     waybar # bar for hyprland
     font-awesome # font used by waybar
-    rofi-wayland # program runner hyprland
+    rofi # program runner hyprland
     lshw # used to get graphic card info
     macchina # fetches system info
     fastfetch
@@ -242,9 +245,12 @@
     alsa-utils # sound util UI
     xfce.thunar-archive-plugin # archive addon to thunar
     weston # used by sddm
+    udiskie # used to mount usbs
+    dunst # notification servis
     tree # make it posible to print folder trees in terminal
     where-is-my-sddm-theme
     wineWowPackages.stable
+    hyprshot
 
     # support 32-bit only
     wine
