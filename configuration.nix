@@ -188,7 +188,6 @@
       "wheel"
       "libvirtd"
       "docker"
-      "udisks"
     ];
     packages = with pkgs; [
       kdePackages.kate
@@ -243,14 +242,17 @@
     imagemagick # to adjust image sizes
     hyprpaper # wallpaper
     alsa-utils # sound util UI
-    xfce.thunar-archive-plugin # archive addon to thunar
+    file-roller # gnome archibe handler
     weston # used by sddm
     udiskie # used to mount usbs
     dunst # notification servis
     tree # make it posible to print folder trees in terminal
     where-is-my-sddm-theme
+    kdePackages.breeze-icons
     wineWowPackages.stable
+    antigravity-fhs
     hyprshot
+    unetbootin
 
     # support 32-bit only
     wine
@@ -315,11 +317,15 @@
     })
   ];
 
+  programs.dconf.enable = true; # <- add this after environment.systemPackages, otherwise it won't be found
   programs.nixvim.enable = true;
   programs.nixvim.defaultEditor = true;
 
   programs.thunar.enable = true;
   programs.xfconf.enable = true;
+  programs.thunar.plugins = with pkgs.xfce; [
+    thunar-archive-plugin
+  ];
   xdg.mime.enable = true;
   xdg.mime.defaultApplications = {
     "inode/directory" = "thunar.desktop";
