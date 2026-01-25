@@ -32,6 +32,7 @@
   networking.networkmanager.enable = true;
   networking.firewall.allowedTCPPorts = [
     57621 # spotify sync with mobile devices on local network
+    8080 # used to test UR
   ];
 
   networking.firewall.allowedUDPPorts = [
@@ -199,7 +200,6 @@
   nixpkgs.config.allowUnfree = true;
   programs.direnv.enable = true;
   virtualisation.docker.enable = true;
-
   # nix-ld is used to run binaries:
   programs.nix-ld = {
     enable = true;
@@ -253,6 +253,7 @@
     antigravity-fhs
     hyprshot
     unetbootin
+    unifi
 
     # support 32-bit only
     wine
