@@ -14,12 +14,19 @@
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
     kickstart-nixvim.nixosModules.default
+    ./modules/rs-test-probe.nix
   ];
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.systemd-boot.configurationLimit = 10;
   boot.loader.efi.canTouchEfiVariables = true;
+  boot.loader.systemd-boot.extraEntries = {
+    "LMDE.conf" = ''
+      title LMDE
+      efi efi/debian/grubx64.efi
+    '';
+  };
 
   networking.hostName = "nixos"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
@@ -209,6 +216,7 @@
       nss_latest
     ];
   };
+
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
@@ -252,8 +260,11 @@
     wineWowPackages.stable
     antigravity-fhs
     hyprshot
-    unetbootin
-    unifi
+    gnome-disk-utility
+    parted
+    tparted
+    prusa-slicer
+    probe-rs-tools
 
     # support 32-bit only
     wine
@@ -401,11 +412,40 @@
     "flakes"
   ];
 
-  nix.settings.substituters = [
-    "https://cache.nixos.org/"
+  services.blueman.enable = true;
+  hardware.bluetooth = {
+    enable = true;
+    powerOnBoot = true;
+    settings = {
+      General = {
+        # Shows battery charge of connected devices on supported
+        # Bluetooth adapters. Defaults to 'false'.
+        Experimental = true;
+        # When enabled other devices can connect faster to us, however
+        # the tradeoff is increased power consumption. Defaults to
+        # 'false'.
+        FastConnectable = true;
+      };
+      Policy = {
+        # Enable all controllers when they are found. This includes
+        # adapters present on start as well as adapters that are plugged
+        # in later on. Defaults to 'true'.
+        AutoEnable = true;
+      };
+    };
+  };
+
+  services.udev.packages = [
+    (pkgs.writeTextFile {
+      name = "microbit-udev-rules";
+      destination = "/etc/udev/rules.d/69-microbit.rules";
+      text = ''
+        # CMSIS-DAP for microbit
+        ACTION!="add|change", GOTO="microbit_rules_end"
+        SUBSYSTEM=="usb", ATTR{idVendor}=="0d28", ATTR{idProduct}=="0204", TAG+="uaccess"
+        LABEL="microbit_rules_end"
+      '';
+    })
   ];
 
-  nix.settings.trusted-substituters = [
-    "https://cache.nixos.org/"
-  ];
 }
