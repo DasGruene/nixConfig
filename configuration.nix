@@ -14,7 +14,7 @@
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
     kickstart-nixvim.nixosModules.default
-    ./modules/rs-test-probe.nix
+    ./modules/rs-probe.nix
   ];
 
   # Bootloader.
@@ -187,6 +187,7 @@
   services.gvfs.enable = true;
   boot.supportedFilesystems = [ "ntfs" ]; # allow winodws format storages devices
 
+  users.groups.plugdev = { }; # used by probe-rs
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.user = {
     isNormalUser = true;
@@ -196,6 +197,7 @@
       "wheel"
       "libvirtd"
       "docker"
+      "plugdev" # used by probe-rs
     ];
     packages = with pkgs; [
       kdePackages.kate
@@ -446,6 +448,6 @@
         LABEL="microbit_rules_end"
       '';
     })
+    (pkgs.probe-rs-tools)
   ];
-
 }
