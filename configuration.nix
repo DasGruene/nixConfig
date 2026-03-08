@@ -16,6 +16,7 @@
     kickstart-nixvim.nixosModules.default
     ./modules/rs-probe.nix
     ./modules/sddm-astronaut.nix
+    ./modules/searxng.nix
   ];
 
   # Bootloader.
