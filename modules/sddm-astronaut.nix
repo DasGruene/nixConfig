@@ -24,4 +24,8 @@ in
       };
     };
   };
+  environment.systemPackages = [
+    customized_sddm_astronaut
+    pkgs.kdePackages.qtmultimedia # used by sddm  astronaut
+  ];
 }

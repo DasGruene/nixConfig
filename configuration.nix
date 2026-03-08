@@ -140,21 +140,8 @@
   boot.blacklistedKernelModules = [ "nouveau" ];
 
   # Enable the KDE Plasma Desktop Environment.
-  services.displayManager.sddm = {
-    enable = true;
-    wayland.enable = true;
-    extraPackages = with pkgs; [
-      sddm-astronaut
-    ];
-
-    theme = "sddm-astronaut-theme";
-    settings = {
-      Theme = {
-        Current = "sddm-astronaut-theme";
-      };
-    };
-  };
-
+  services.displayManager.sddm.enable = true;
+  services.displayManager.sddm.wayland.enable = true;
   # Configure keymap in X11
   services.xserver.xkb = {
     layout = "dk";
@@ -238,7 +225,6 @@
     vim
     vimPlugins.vim-wayland-clipboard
     git
-    kdePackages.qtmultimedia # used by sddm  astronaut
     docker-compose
     ghostty
     fish
@@ -267,11 +253,9 @@
     hyprpaper # wallpaper
     alsa-utils # sound util UI
     file-roller # gnome archibe handler
-    weston # used by sddm
     udiskie # used to mount usbs
     dunst # notification servis
     tree # make it posible to print folder trees in terminal
-    sddm-astronaut
     kdePackages.breeze-icons
     wineWowPackages.stable
     antigravity-fhs
