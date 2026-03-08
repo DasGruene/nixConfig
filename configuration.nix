@@ -15,12 +15,14 @@
     ./hardware-configuration.nix
     kickstart-nixvim.nixosModules.default
     ./modules/rs-probe.nix
+    ./modules/sddm-astronaut.nix
   ];
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.systemd-boot.configurationLimit = 10;
   boot.loader.efi.canTouchEfiVariables = true;
+  boot.loader.timeout = 20;
   boot.loader.systemd-boot.extraEntries = {
     "LMDE.conf" = ''
       title LMDE
@@ -71,12 +73,13 @@
   programs.nm-applet.enable = true;
 
   #Hyprland stuff
-  services.hypridle.enable = true;
   programs.hyprland = {
     enable = true;
     withUWSM = true; # recommended for most users
     xwayland.enable = true;
   };
+  services.hypridle.enable = true;
+  programs.hyprlock.enable = true;
 
   environment.sessionVariables = {
     WLR_NO_HARDWARE_CURSORS = "1";
@@ -137,10 +140,20 @@
   boot.blacklistedKernelModules = [ "nouveau" ];
 
   # Enable the KDE Plasma Desktop Environment.
-  services.displayManager.sddm.enable = true;
-  services.displayManager.sddm.theme = "where-is-my-sddm-theme";
-  services.displayManager.sddm.wayland.enable = true;
-  #  services.desktopManager.plasma6.enable = true;
+  services.displayManager.sddm = {
+    enable = true;
+    wayland.enable = true;
+    extraPackages = with pkgs; [
+      sddm-astronaut
+    ];
+
+    theme = "sddm-astronaut-theme";
+    settings = {
+      Theme = {
+        Current = "sddm-astronaut-theme";
+      };
+    };
+  };
 
   # Configure keymap in X11
   services.xserver.xkb = {
@@ -225,6 +238,7 @@
     vim
     vimPlugins.vim-wayland-clipboard
     git
+    kdePackages.qtmultimedia # used by sddm  astronaut
     docker-compose
     ghostty
     fish
@@ -244,7 +258,7 @@
     waybar # bar for hyprland
     font-awesome # font used by waybar
     rofi # program runner hyprland
-    lshw # used to get graphic card info
+    lshw # used to get graphic chard info
     macchina # fetches system info
     fastfetch
     qdirstat # disk analyser
@@ -257,7 +271,7 @@
     udiskie # used to mount usbs
     dunst # notification servis
     tree # make it posible to print folder trees in terminal
-    where-is-my-sddm-theme
+    sddm-astronaut
     kdePackages.breeze-icons
     wineWowPackages.stable
     antigravity-fhs
