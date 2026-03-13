@@ -82,6 +82,9 @@
   services.hypridle.enable = true;
   programs.hyprlock.enable = true;
 
+  #Niri stuff
+  programs.niri.enable = true;
+
   environment.sessionVariables = {
     WLR_NO_HARDWARE_CURSORS = "1";
     TERMINAL = "ghostty"; # makes nvim and vim open in ghostty if called through the runner
@@ -266,6 +269,7 @@
     tparted
     prusa-slicer
     probe-rs-tools
+    niri
 
     # support 32-bit only
     wine
