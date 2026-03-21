@@ -143,8 +143,10 @@
 
   boot.blacklistedKernelModules = [ "nouveau" ];
 
-  # Enable the KDE Plasma Desktop Environment.
-  services.displayManager.sddm.enable = true;
+  services.displayManager.sddm = {
+    enable = true;
+  };
+
   services.displayManager.sddm.wayland.enable = true;
   # Configure keymap in X11
   services.xserver.xkb = {
@@ -229,6 +231,9 @@
     vim
     vimPlugins.vim-wayland-clipboard
     git
+    (pkgs.writeShellScriptBin "codelldb" ''
+      exec ${pkgs.vscode-extensions.vadimcn.vscode-lldb}/share/vscode/extensions/vadimcn.vscode-lldb/adapter/codelldb "$@"
+    '') # used to debug low level code
     docker-compose
     ghostty
     fish
