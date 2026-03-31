@@ -5,6 +5,7 @@
 {
   config,
   pkgs,
+  lib,
   kickstart-nixvim,
   ...
 }:
@@ -20,6 +21,9 @@
   ];
 
   # Bootloader.
+  # deactivate userdb that can be used to stores age and name
+  systemd.package = pkgs.systemd.override { withUserDb = false; };
+  services.userdbd.enable = lib.mkForce false;
   boot.loader.systemd-boot.enable = true;
   boot.loader.systemd-boot.configurationLimit = 10;
   boot.loader.efi.canTouchEfiVariables = true;
@@ -234,6 +238,8 @@
     (pkgs.writeShellScriptBin "codelldb" ''
       exec ${pkgs.vscode-extensions.vadimcn.vscode-lldb}/share/vscode/extensions/vadimcn.vscode-lldb/adapter/codelldb "$@"
     '') # used to debug low level code
+    gdb
+    gcc-arm-embedded
     docker-compose
     ghostty
     fish
