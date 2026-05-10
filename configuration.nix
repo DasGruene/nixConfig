@@ -196,6 +196,7 @@
   services.devmon.enable = true;
   services.gvfs.enable = true;
   boot.supportedFilesystems = [ "ntfs" ]; # allow winodws format storages devices
+  boot.kernelPackages = pkgs.linuxPackages; # use the newest kernal
 
   users.groups.plugdev = { }; # used by probe-rs
   # Define a user account. Don't forget to set a password with ‘passwd’.
@@ -260,8 +261,7 @@
     font-awesome # font used by waybar
     rofi # program runner hyprland
     lshw # used to get graphic chard info
-    macchina # fetches system info
-    fastfetch
+    fastfetch # fetches system info
     qdirstat # disk analyser
     networkmanagerapplet # network ui
     imagemagick # to adjust image sizes
@@ -272,17 +272,18 @@
     dunst # notification servis
     tree # make it posible to print folder trees in terminal
     kdePackages.breeze-icons
-    wineWowPackages.stable
     antigravity-fhs
     hyprshot
     gnome-disk-utility
+    adwaita-icon-theme
     parted
     tparted
     prusa-slicer
     probe-rs-tools
-    niri
+    mistral-vibe
 
     # support 32-bit only
+    wineWowPackages.stable
     wine
 
     # support 64-bit only
